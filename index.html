@@ -1,34 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Undertale Web</title>
-  <script>
-    window.onload = function () {
-      if (typeof BoxedWine === 'undefined') {
-        document.body.innerHTML = `
-          <h2 style="color:red;">❌ BoxedWine is NOT defined</h2>
-          <p>Check the following:</p>
-          <ul>
-            <li>Is <code>boxedwine.js</code> present in the same directory?</li>
-            <li>Are you loading this over HTTPS (not <code>file://</code>)?</li>
-            <li>Is the file under 100 MB? GitHub blocks large files.</li>
-            <li>Open DevTools Console for more info.</li>
-          </ul>`;
-        return;
-      }
-
-      BoxedWine({
-        arguments: ['undertale_folder/Undertale.exe'],
-        locateFile: function (filename) {
-          return filename;
-        }
-      });
-    };
-  </script>
-  <script src="boxedwine.js"></script>
+  <script src="boxedwine.js" defer></script>
 </head>
 <body>
-  <h1>Loading Undertale...</h1>
+  <h1>Launching Undertale...</h1>
+  <div id="status">Checking if BoxedWine script loaded...</div>
+
+  <script>
+    window.onload = () => {
+      const status = document.getElementById('status');
+      if (typeof BoxedWine === "undefined") {
+        status.innerText = "❌ BoxedWine is NOT defined.\nCheck if boxedwine.js is present and properly linked.";
+        console.error("❌ BoxedWine is NOT defined.");
+      } else {
+        status.innerText = "✅ BoxedWine loaded!";
+        console.log("✅ BoxedWine loaded!");
+
+        // Example: start the game (adjust this part as needed)
+        BoxedWine({
+          arguments: ["undertale_folder/UNDERTALE.exe"]
+        });
+      }
+    };
+  </script>
 </body>
 </html>
