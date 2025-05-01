@@ -9,42 +9,67 @@
       color: white;
       font-family: monospace;
       text-align: center;
-      margin-top: 50px;
+      padding: 2em;
     }
     canvas {
       display: block;
-      margin: 0 auto;
+      margin: 1em auto;
+    }
+    #output {
+      white-space: pre-wrap;
+      text-align: left;
+      margin: 2em auto;
+      width: 90%;
+      max-width: 600px;
+      border: 1px solid #555;
+      padding: 1em;
+      background: #111;
     }
   </style>
 </head>
 <body>
   <h1>Loading Undertale...</h1>
-  <div id="output"></div>
+  <div id="output">Initializing...</div>
 
-  <script src="boxedwine.js"></script>
   <script>
-    if (typeof BoxedWine === 'undefined') {
-      document.getElementById("output").innerText = "Error: BoxedWine failed to load.";
-    } else {
-      BoxedWine({
-        arguments: ["Undertale.exe"],
-        preRun: [],
-        postRun: [],
-        canvas: (function () {
-          var canvas = document.createElement("canvas");
-          document.body.appendChild(canvas);
-          return canvas;
-        })(),
-        print: function (text) {
-          const output = document.getElementById("output");
-          output.innerText += text + "\n";
-        },
-        printErr: function (text) {
-          const output = document.getElementById("output");
-          output.innerText += "ERR: " + text + "\n";
-        }
-      });
+    function log(msg) {
+      const output = document.getElementById("output");
+      output.innerText += "\n" + msg;
     }
+
+    window.addEventListener("load", () => {
+      log("Checking if BoxedWine script loaded...");
+
+      if (typeof BoxedWine === 'undefined') {
+        log("❌ BoxedWine is NOT defined. Possible causes:");
+        log("- boxedwine.js is missing or failed to load.");
+        log("- You're running the page from file:// instead of https://.");
+        log("- CORS or server error blocked loading the script.");
+        return;
+      }
+
+      log("✅ BoxedWine loaded. Initializing...");
+
+      try {
+        BoxedWine({
+          arguments: ["Undertale.exe"],
+          preRun: [() => log("preRun step completed.")],
+          postRun: [() => log("postRun step completed.")],
+          canvas: (() => {
+            const canvas = document.createElement("canvas");
+            document.body.appendChild(canvas);
+            return canvas;
+          })(),
+          print: text => log("OUT: " + text),
+          printErr: text => log("ERR: " + text),
+          onAbort: () => log("❌ BoxedWine aborted."),
+          onExit: code => log("💀 Game exited with code " + code)
+        });
+      } catch (e) {
+        log("❌ Exception during BoxedWine initialization:");
+        log(e.message || e.toString());
+      }
+    });
   </script>
 </body>
 </html>
