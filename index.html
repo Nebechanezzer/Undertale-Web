@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Undertale Web</title>
-  <script src="boxedwine.js" defer></script>
+  <!-- Ensure the path to boxedwine.js is correct -->
+  <script src="boxedwine.js"></script>
 </head>
 <body>
   <h1>Launching Undertale...</h1>
@@ -13,6 +14,7 @@
   <script>
     window.onload = () => {
       const status = document.getElementById('status');
+      // Check if BoxedWine is defined
       if (typeof BoxedWine === "undefined") {
         status.innerText = "❌ BoxedWine is NOT defined.\nCheck if boxedwine.js is present and properly linked.";
         console.error("❌ BoxedWine is NOT defined.");
@@ -20,7 +22,7 @@
         status.innerText = "✅ BoxedWine loaded!";
         console.log("✅ BoxedWine loaded!");
 
-        // Example: start the game (adjust this part as needed)
+        // Start the game with the correct executable name (all caps)
         BoxedWine({
           arguments: ["undertale_folder/UNDERTALE.exe"]
         });
