@@ -2,58 +2,49 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin" />
-  <meta http-equiv="Cross-Origin-Embedder-Policy" content="require-corp" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BoxedWine - Undertale</title>
+  <title>Undertale Web</title>
   <style>
     body {
-      background: #111;
-      color: #fff;
-      font-family: sans-serif;
+      background-color: black;
+      color: white;
+      font-family: monospace;
       text-align: center;
-      margin: 0;
-      padding: 20px;
+      margin-top: 50px;
     }
-    #canvas {
-      border: 1px solid #444;
-      margin-top: 20px;
-    }
-    #loading {
-      font-size: 1.2em;
-      margin-top: 10px;
+    canvas {
+      display: block;
+      margin: 0 auto;
     }
   </style>
 </head>
 <body>
-  <h1>Running Undertale in BoxedWine</h1>
-  <canvas id="canvas" width="800" height="600"></canvas>
-  <div id="loading">Loading game...</div>
+  <h1>Loading Undertale...</h1>
+  <div id="output"></div>
 
   <script src="boxedwine.js"></script>
   <script>
-    window.onload = async () => {
-      if (typeof BoxedWine === 'undefined') {
-        document.getElementById('loading').innerText = "Error: BoxedWine not loaded.";
-        return;
-      }
-
+    if (typeof BoxedWine === 'undefined') {
+      document.getElementById("output").innerText = "Error: BoxedWine failed to load.";
+    } else {
       BoxedWine({
-        canvas: document.getElementById('canvas'),
-        arguments: ["/undertale_folder/Undertale.exe"],
-        mountPaths: {
-          "/undertale_folder": "undertale_folder"
+        arguments: ["Undertale.exe"],
+        preRun: [],
+        postRun: [],
+        canvas: (function () {
+          var canvas = document.createElement("canvas");
+          document.body.appendChild(canvas);
+          return canvas;
+        })(),
+        print: function (text) {
+          const output = document.getElementById("output");
+          output.innerText += text + "\n";
         },
-        print: (text) => console.log(text),
-        printErr: (err) => console.error(err),
-        noInitialRun: false,
-      }).then(() => {
-        document.getElementById('loading').innerText = "Game is running!";
-      }).catch((e) => {
-        document.getElementById('loading').innerText = "Failed to load game.";
-        console.error(e);
+        printErr: function (text) {
+          const output = document.getElementById("output");
+          output.innerText += "ERR: " + text + "\n";
+        }
       });
-    };
+    }
   </script>
 </body>
 </html>
