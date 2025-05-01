@@ -1,0 +1,18 @@
+{
+    "actions": [
+        {
+            "install": {
+                "action": "savePath", 
+                "arguments": {
+                    "savePath": "{localappdata}/UNDERTALE", 
+                    "type": "folder"
+                }
+            }, 
+            "languages": [
+                "*"
+            ], 
+            "name": "saveFolders"
+        }
+    ], 
+    "productId": "1456487183"
+}
