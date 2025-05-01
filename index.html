@@ -3,69 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Play Undertale</title>
-  <style>
-    body {
-      background-color: #111;
-      color: #fff;
-      font-family: sans-serif;
-      text-align: center;
-      margin: 0;
-      padding: 0;
-    }
-    #status {
-      margin-top: 2em;
-    }
-    canvas {
-      display: block;
-      margin: 2em auto;
-    }
-  </style>
-  <script src="boxedwine.js"></script>
+  <title>Undertale Web</title>
+  <script src="boxedwine.js" defer></script>
 </head>
 <body>
-  <h1>Loading Undertale...</h1>
-  <div id="status">Initializing...</div>
+  <h1>Launching Undertale...</h1>
+  <div id="status">Loading...</div>
 
   <script>
-    window.addEventListener('load', function () {
-      const statusEl = document.getElementById('status');
-
+    window.onload = () => {
+      const status = document.getElementById('status');
       if (typeof BoxedWine === "undefined") {
-        statusEl.textContent = "❌ Failed to load BoxedWine. Check that boxedwine.js is present and linked.";
-        console.error("BoxedWine is NOT defined.");
+        status.innerText = "❌ BoxedWine is NOT defined.";
         return;
       }
 
-      statusEl.textContent = "✅ BoxedWine loaded. Starting Undertale...";
+      status.innerText = "✅ BoxedWine loaded. Starting...";
 
-      // Start BoxedWine and launch UNDERTALE.EXE
       BoxedWine({
-        // Adjust this path if UNDERTALE.EXE is elsewhere
-        arguments: ["UNDERTALE.exe"],
-
-        // Optional: mount a folder containing Undertale and all needed files
         filesystem: [
           {
             mountPoint: "/",
             type: "zip",
-            url: "undertale_folder.zip"
+            url: "https://profound-panda-70c6e6.netlify.app/undertale.zip"  // Your Netlify URL
           }
         ],
-
-        print: function (text) {
-          console.log(text);
-        },
-        printErr: function (text) {
-          console.error(text);
-        },
-        canvas: (() => {
-          const canvas = document.createElement('canvas');
-          document.body.appendChild(canvas);
-          return canvas;
-        })()
+        arguments: ["UNDERTALE.exe"]  // Correct file name: UNDERTALE with capitalized letters
       });
-    });
+    };
   </script>
 </body>
 </html>
