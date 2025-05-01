@@ -2,33 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Undertale Web</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>UNDERTALE Web</title>
   <script src="boxedwine.js" defer></script>
 </head>
 <body>
-  <h1>Launching Undertale...</h1>
-  <div id="status">Loading...</div>
+  <h1>Launching UNDERTALE...</h1>
+  <div id="status">Loading BoxedWine...</div>
 
   <script>
     window.onload = () => {
-      const status = document.getElementById('status');
+      const status = document.getElementById("status");
+
       if (typeof BoxedWine === "undefined") {
-        status.innerText = "❌ BoxedWine is NOT defined.";
+        status.innerText = "❌ BoxedWine is NOT defined.\nCheck if boxedwine.js is present and loaded.";
+        console.error("BoxedWine is NOT defined.");
         return;
       }
 
-      status.innerText = "✅ BoxedWine loaded. Starting...";
+      status.innerText = "✅ BoxedWine loaded. Starting game...";
 
       BoxedWine({
-        filesystem: [
-          {
-            mountPoint: "/",
-            type: "zip",
-            url: "https://profound-panda-70c6e6.netlify.app/undertale.zip"  // Your Netlify URL
-          }
-        ],
-        arguments: ["UNDERTALE.exe"]  // Correct file name: UNDERTALE with capitalized letters
+        zip: "undertale.zip", // The ZIP file must be in the same folder as this index.html
+        arguments: ["UNDERTALE.exe"]
       });
     };
   </script>
