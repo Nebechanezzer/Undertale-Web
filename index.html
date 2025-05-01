@@ -1,56 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Undertale Web</title>
-  <style>
-    body {
-      background-color: black;
-      color: white;
-      font-family: monospace;
-      text-align: center;
-      padding: 2em;
-    }
-    canvas {
-      display: block;
-      margin: 1em auto;
-    }
-  </style>
-</head>
-<body>
-  <h1>Loading Undertale...</h1>
-  <div id="output">Initializing...</div>
-
-  <script src="boxedwine.js"></script>
   <script>
-    function log(msg) {
-      document.getElementById("output").innerText += "\n" + msg;
-    }
-
-    window.onload = () => {
+    window.onload = function () {
       if (typeof BoxedWine === 'undefined') {
-        log("❌ BoxedWine is NOT defined. Check script path and CORS.");
+        document.body.innerHTML = `
+          <h2 style="color:red;">❌ BoxedWine is NOT defined</h2>
+          <p>Check the following:</p>
+          <ul>
+            <li>Is <code>boxedwine.js</code> present in the same directory?</li>
+            <li>Are you loading this over HTTPS (not <code>file://</code>)?</li>
+            <li>Is the file under 100 MB? GitHub blocks large files.</li>
+            <li>Open DevTools Console for more info.</li>
+          </ul>`;
         return;
       }
 
-      log("✅ BoxedWine script loaded. Starting game...");
-
       BoxedWine({
-        arguments: ["/undertale_folder/Undertale.exe"],
-        canvas: (() => {
-          const canvas = document.createElement("canvas");
-          document.body.appendChild(canvas);
-          return canvas;
-        })(),
-        print: text => log("OUT: " + text),
-        printErr: text => log("ERR: " + text),
-        onAbort: () => log("❌ Aborted."),
-        onExit: code => log("Game exited with code: " + code),
-        mount: {
-          "/undertale_folder": "undertale_folder"
+        arguments: ['undertale_folder/Undertale.exe'],
+        locateFile: function (filename) {
+          return filename;
         }
       });
     };
   </script>
+  <script src="boxedwine.js"></script>
+</head>
+<body>
+  <h1>Loading Undertale...</h1>
 </body>
 </html>
